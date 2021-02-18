@@ -1,5 +1,5 @@
 function plotData(x, y)
-%   PLOTDATA(x,y) plots the data points
+%   Plots data points
 %   x = population and y = profit.
     figure; % open a new figure window
     plot(x, y, 'rx', 'MarkerSize', 10); % Plot the data
