@@ -1,7 +1,5 @@
 function [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters)
-% Gradient descent
-% updates theta by
-% taking num_iters gradient steps with learning rate alpha
+% Gradient descent and updates theta using the learning rate alpha
 
     % Initialize some useful values
     m = length(y); % number of training examples
@@ -15,5 +13,4 @@ function [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters
         % Save the cost J in every iteration
         J_history(iter) = computeCostMulti(X, y, theta);
     end
-
 end

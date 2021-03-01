@@ -34,11 +34,12 @@ theta = zeros(3, 1);
 
 % Plot the convergence graph
 figure;
+% Cost
 plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
 xlabel('Number of iterations');
 ylabel('Cost J');
 
-% Display gradient descent's result
+% Theta after gradient descent
 fprintf('Theta computed from gradient descent: \n');
 fprintf(' %f \n', theta);
 fprintf('\n');
