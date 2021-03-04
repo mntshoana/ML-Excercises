@@ -9,35 +9,35 @@ fprintf('Basic Function\n');
 fprintf(' - A 5x5 Identity Matrix: \n');
 % FILE: warmUpExercise.m
 warmUpExercise()
-fprintf('Paused. Press enter to continue.\n');
+fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
-%% ===================     Part 2: Plotting   ====================
+%% ===================     Part 2: Plotting   ===================
+% x= population size in 10,000s
+% y= profit in $10,000s
 fprintf('Plotting Data\n')
-% x is the population size in 10,000s
-% y is the profit in $10,000s
 data = load('ex1data1.txt');
 X = data(:, 1); y = data(:, 2);
 m = length(y); % number of training examples
 % FILE: plotData.m
 plotData(X, y);
-fprintf('Paused. Press enter to continue.\n');
+fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
 %% ============== Part 3: Cost and Gradient descent =============
-fprintf('\nTesting the cost function ...\n')
+fprintf('Testing the cost function ...\n')
 X = [ones(m, 1), data(:,1)];  % MX2
-theta = zeros(2, 1);          % 2X1 (fitting parameters)
-J = computeCost(X, y, theta); % COST function
+theta = zeros(2, 1);          % 2X1
+J = computeCost(X, y, theta);
 fprintf(' - With theta = [0 ; 0]\nCost computed = %f\n', J);
 fprintf(' - Expected cost value (approx) 32.07\n');
-J = computeCost(X, y, [-1 ; 2]); % COST function
+J = computeCost(X, y, [-1 ; 2]);
 fprintf('\n - With theta = [-1 ; 2]\nCost computed = %f\n', J);
 fprintf(' - Expected cost value (approx) 54.24\n');
-fprintf('Paused. Press enter to continue.\n');
+fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
-fprintf('\nRunning Gradient Descent ...\n')
+fprintf('Running Gradient Descent ...\n')
 iterations = 1500;
 alpha = 0.01;
 [theta,Jhist] = gradientDescent(X, y, theta, alpha, iterations);
@@ -60,7 +60,7 @@ predict2 = [1, 7] * theta; % population of 70,000
 fprintf('For population = 70,000, we predict a profit of %f\n',...
     predict2*10000);
 
-fprintf('Paused. Press enter to continue.\n');
+fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
 %% =========== Part 4: Visualizing J(theta_0, theta_1) ==========
@@ -93,5 +93,5 @@ contour(theta0_vals, theta1_vals, J_vals, logspace(-2, 3, 20))
 xlabel('\theta_0'); ylabel('\theta_1');
 hold on;
 plot(theta(1), theta(2), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-printf('Paused. Press enter to continue.\n');
+printf('Paused. Press enter to continue.\n\n');
 pause;
