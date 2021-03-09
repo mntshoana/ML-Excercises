@@ -46,3 +46,39 @@ fprintf('Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n');
 
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
+
+%% ============= Part 3: Optimizing using fminunc  =============
+%  In this exercise, you will use a built-in function (fminunc) to find the
+%  optimal parameters theta.
+
+%  Set options for fminunc
+options = optimset('GradObj', 'on', 'MaxIter', 400);
+
+%  Run fminunc to obtain the optimal theta
+%  This function will return theta and the cost
+[theta, cost] = ...
+    fminunc(@(t)(costFunction(t, X, y)), initial_theta, options);
+
+% Print theta to screen
+fprintf('Cost at theta found by fminunc: %f\n', cost);
+fprintf('Expected cost (approx): 0.203\n');
+fprintf('theta: \n');
+fprintf(' %f \n', theta);
+fprintf('Expected theta (approx):\n');
+fprintf(' -25.161\n 0.206\n 0.201\n');
+
+%FILE: plotDecisionBoundary.m
+plotDecisionBoundary(theta, X, y);
+
+% Put some labels
+hold on;
+% Labels and Legend
+xlabel('Exam 1 score')
+ylabel('Exam 2 score')
+
+% Specified in plot order
+legend('Admitted', 'Not admitted')
+hold off;
+
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
