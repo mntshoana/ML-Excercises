@@ -1,15 +1,15 @@
 function plotDecisionBoundary(theta, X, y)
-% Plots the data points X and y with the decision boundary defined by theta
+% Plots X and y with the decision boundary defined by theta
 %   X is assumed to be a either
-%   1) Mx3 matrix, where the first column is an all-ones column for the 
-%      intercept.
-%   2) MxN, N>3 matrix, where the first column is all-ones
-
+%   1) Mx3 matrix, with first column all-ones
+%   2) MxN, N>3 matrix, with the first column all-ones
+    
+    %FILE: plotData.m
     plotData(X(:,2:3), y);
     hold on
 
     if size(X, 2) <= 3
-        % Only need 2 points to define a line, so choose two endpoints
+        % Need 2 points to define a line, so choose two endpoints
         plot_x = [ min(X(:,2)) -2,  max(X(:,2)) +2];
 
         % Calculate the decision boundary line

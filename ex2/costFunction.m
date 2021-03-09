@@ -4,9 +4,11 @@ function [J, grad] = costFunction(theta, X, y)
     m = length(y); % number of training examples
     k = 1/m;
     
-    % COST
+    % HYPOTHESIS
     z = X * theta;
     h = sigmoid(z);
+
+    % COST
     log1 = log(h);
     log0 = log(1 - h);
     a = - y' * log1;

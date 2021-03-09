@@ -12,6 +12,7 @@ y = data(:, 3);
 fprintf(['Plotting data with + indicating (y = 1) examples and o ' ...
          'indicating (y = 0) examples.\n']);
 
+%FILE: plotData.m
 plotData(X, y);
 hold on;
 xlabel('Exam 1 score')
@@ -21,7 +22,7 @@ hold off;
 fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
-% ================ Part 2: Compute Cost and Gradient ================
+% ============== Part 2: Compute Cost and Gradient ==============
 [m, n] = size(X);
 X = [ones(m, 1), X];
 
