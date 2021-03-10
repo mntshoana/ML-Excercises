@@ -6,6 +6,7 @@ function [J, grad] = costFunction(theta, X, y)
     
     % HYPOTHESIS
     z = X * theta;
+    %FILE: sigmoid.m
     h = sigmoid(z);
 
     % COST
