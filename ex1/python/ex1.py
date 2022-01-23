@@ -1,4 +1,4 @@
-## Machine Learning - Exercise 1: Linear Regression
+## Machine Learning - Exercise 1: Linear Regression (univariate)
 #
 # INITIALIZE
 import os
@@ -20,7 +20,7 @@ from plotData import plotData
 # x= population size in 10,000s
 # y= profit in $10,000s
 print('Plotting data')
-data = pd.read_csv('ex1data1.txt', names=['Population', 'Profit'])
+data = pd.read_csv('../ex1data1.txt', names=['Population', 'Profit'])
 X = data.iloc[:,0]
 y = data.iloc[:,1]
 m = data.shape[0] #tuple (row, col) // looking for row
@@ -42,3 +42,4 @@ print('\n - With theta = [-1 ; 2]\nCost computed = ', J);
 print(' - Expected cost value (approx) 54.24');
 input('Paused. Press enter to continue.\n');
 
+##=======================TODO PART 4 in python =======================
