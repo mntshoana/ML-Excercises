@@ -16,7 +16,7 @@ pause;
 % x= population size in 10,000s
 % y= profit in $10,000s
 fprintf('Plotting Data\n')
-data = load('ex1data1.txt');
+data = load('../ex1data1.txt');
 X = data(:, 1); y = data(:, 2);
 m = length(y); % number of training examples
 % FILE: plotData.m
