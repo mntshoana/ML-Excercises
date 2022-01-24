@@ -4,30 +4,22 @@
 clear;
 close all;
 clc;
-% ==================== Part 1: Basic Function ====================
-fprintf('Basic Function\n');
-fprintf(' - A 5x5 Identity Matrix: \n');
-% FILE: warmUpExercise.m
-warmUpExercise()
-fprintf('Paused. Press enter to continue.\n\n');
-pause;
-
-%% ===================     Part 2: Plotting   ===================
-% x= population size in 10,000s
-% y= profit in $10,000s
-fprintf('Plotting Data\n')
+% ==================== Part 2: Plotting   ===================
+% X represents population size in units of 10,000s
+% y represents profit in units of $10,000s
+fprintf('Plotting\n')
 data = load('../ex1data1.txt');
 X = data(:, 1); y = data(:, 2);
-m = length(y); % number of training examples
 % FILE: plotData.m
 plotData(X, y);
 fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
 %% ============== Part 3: Cost and Gradient descent =============
-fprintf('Testing the cost function ...\n')
-X = [ones(m, 1), data(:,1)];  % MX2
-theta = zeros(2, 1);          % 2X1
+fprintf('Cost function test...\n')
+m = length(y); % number of training examples
+X = [ones(m, 1), data(:,1)]; 
+theta = zeros(2, 1);
 J = computeCost(X, y, theta);
 fprintf(' - With theta = [0 ; 0]\nCost computed = %f\n', J);
 fprintf(' - Expected cost value (approx) 32.07\n');
