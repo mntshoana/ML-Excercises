@@ -40,7 +40,8 @@ fprintf('  -3.6303\n  1.1664\n\n');
 
 % Plot the linear fit
 hold on; % keep previous plot visible
-plot(X(:,2), X*theta, '-')
+plot(1:m, X(:,2), '-')
+plot(1:m, X*theta, '-')
 legend('Training data', 'Linear regression')
 hold off % don't overlay any more plots on this figure
 
