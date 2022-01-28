@@ -8,11 +8,11 @@ import numpy as np
 os.system('cls' if os.name == 'nt' else 'clear')
 plt.close("all")
 ## =================== Part 2: Plotting   ====================
-from plotData import plotData
+from python.plotData import plotData
 # X represents population size in units of 10,000s
 # y represents profit in units of $10,000s
 print('Plotting data')
-data = pd.read_csv('../ex1data1.txt', names=['Population', 'Profit'])
+data = pd.read_csv('data/ex1data1.txt', names=['Population', 'Profit'])
 X = data.iloc[:,0]
 y = data.iloc[:,1]
 #FILE: plotData.py
@@ -20,7 +20,7 @@ plotData(X,y)
 input('Paused. Press enter to continue.\n')
 
 ## ============== Part 3: Cost and Gradient descent =============
-from computeCost import computeCost
+from python.computeCost import computeCost
 print('Testing the cost function ...')
 m = data.shape #tuple (row, col)
 m = m[0] # row
@@ -35,7 +35,7 @@ print('\n - With theta = [-1 ; 2]\nCost computed = ', J)
 print(' - Expected cost value (approx) 54.24')
 input('Paused. Press enter to continue.\n')
 
-from gradientDescent import gradientDescent
+from python.gradientDescent import gradientDescent
 print('Running Gradient Descent ...')
 iterations = 1500
 alpha = 0.01
