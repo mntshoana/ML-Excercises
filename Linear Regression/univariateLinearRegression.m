@@ -45,7 +45,7 @@ plot(1:m, X(:,2), '-')
 plot(1:m, X*theta, '-')
 legend('Training data', 'Linear regression')
 hold off % don't overlay any more plots on this figure
-~
+
 %Predict
 predict1 = [1, 3.5] *theta; % population of 35,000
 fprintf('For population = 35,000, we predict a profit of %f\n',...

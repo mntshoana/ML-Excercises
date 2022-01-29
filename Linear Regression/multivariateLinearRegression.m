@@ -1,11 +1,11 @@
-%% Machine Learning Exercise 1: Linear regression with multiple variables
+%% Multivariate Linear Regression
 %
 % INITIALIZE
 clear;
 close all;
 clc;
 addpath ("octave")
-% ================ Part 1: Feature Normalization ================
+% ================ Feature Normalization ================
 data = load('data/ex1data2.txt');
 X = data(:, 1:2);
 y = data(:, 3);
