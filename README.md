@@ -1,5 +1,5 @@
 # Machine Learning Course
-## Taught by Andrew Ng
-These are the excises towards understanding machine learning
+These are excises for understanding machine learning
 
-This code runs with either matlab or octave
+This code can be run on either matlab or octave
+as well as on python.
