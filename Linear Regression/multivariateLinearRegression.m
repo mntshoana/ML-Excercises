@@ -6,10 +6,14 @@ close all;
 clc;
 addpath ("octave")
 % ================ Feature Normalization ================
+% X1 represents the size of a housen in sq-ft
+% X2 represents the number of bedrooms
+% y represents price of the house
 data = load('data/ex1data2.txt');
 X = data(:, 1:2);
 y = data(:, 3);
 m = length(y);
+
 fprintf('First 10 examples from the dataset: \n');
 fprintf(' x = [%.0f %.0f], y = %.0f \n', [X(1:10,:) y(1:10,:)]');
 
@@ -22,7 +26,7 @@ Xnorm = [ones(m, 1) Xnorm];
 fprintf('Paused. Press enter to continue.\n');
 pause;
 
-%% ================ Part 2: Gradient Descent ================
+%% ================ Gradient Descent ================
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
