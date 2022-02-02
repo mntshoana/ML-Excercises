@@ -51,13 +51,13 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 price = [1, (1650 - mu)/sigma , (3 - mu)/sigma] *theta;% You should change this
-fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
+fprintf(['Predicted price of a 1650 sq-ft, 3 bedroom house ' ...
          '(using gradient descent):\n $%f\n'], price);
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
-%% ================ Part 3: Normal Equations ================
+%% ================ Normal Equations ================
 fprintf("Using normal equation...\n");
 X = [ones(m, 0), X]
 

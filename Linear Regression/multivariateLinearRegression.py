@@ -30,5 +30,34 @@ Xnorm = np.append(np.ones((m, 1)), Xnorm.to_numpy().reshape(m,2), axis=1 )
 input('Paused. Press enter to continue.\n')
 
 ## ================ Gradient Descent ================
-#print('Running gradient descent ...\n')
-#Todo
+print('Running gradient descent ...\n')
+
+# Choose some alpha value
+alpha = 0.01
+num_iters = 400
+
+# Init Theta and Run Gradient Descent 
+y = y.to_numpy().reshape(m,1)
+theta = np.zeros((3, 1))
+from python.gradientDescent import gradientDescent
+theta, J_history = gradientDescent(Xnorm, y, theta, alpha, num_iters)
+
+# Plot the convergence graph
+# Cost
+plt.plot(range(0, J_history.size), J_history, '-b', linewidth=2)
+plt.xlabel('Number of iterations')
+plt.ylabel('Cost J')
+plt.show()
+
+# Theta after gradient descent
+print('Theta computed from gradient descent:\n', theta)
+
+# Estimate the price of a 1650 sq-ft, 3 br house
+price = np.array([1, (1650 - mu)/sigma , (3 - mu)/sigma]).dot(theta)
+print('Predicted price of a 1650 sq-ft, 3 bedroom house', 
+    '(using gradient descent):\n', price)
+
+input('Paused. Press enter to continue.\n')
+
+# ================ Normal Equations ================
+#TODO
