@@ -60,4 +60,16 @@ print('Predicted price of a 1650 sq-ft, 3 bedroom house',
 input('Paused. Press enter to continue.\n')
 
 # ================ Normal Equations ================
-#TODO
+# Still requires intercept term (Theta 0)
+print("Using normal equation...\n")
+X = np.append(np.ones((m, 1)), X.to_numpy().reshape(m,2), axis=1 )
+from python.normalEqn import normalEqn
+theta = normalEqn(X, y)
+
+# Display normal equation's result
+print('Theta computed from the normal equations: \n', theta, '\n')
+
+# Estimate the price of a 1650 sq-ft, 3 br house
+price = np.array([1, 1650  , 3 ]).dot(theta)
+print('Predicted price of a 1650 sq-ft, 3 br house ',
+         '(using normal equations):\n$', price[0])
