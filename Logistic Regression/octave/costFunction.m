@@ -1,4 +1,4 @@
-function [J, grad] = costFunction(theta, X, y)
+function [J, deltaJ] = costFunction(theta, X, y)
 %   Logistic regression
 %   Cost and gradient 
     m = length(y);
@@ -9,12 +9,11 @@ function [J, grad] = costFunction(theta, X, y)
     h = sigmoid(z);
 
     % COST
-    log1 = log(h);
-    log0 = log(1 - h);
-    a = - y' * log1;
-    b = (1 - y)' * log0;
+    a = - y' * log(h);
+    b = (1 - y)' * log(1 - h);
     J = 1/m * (a - b);
 
-
+    % GRADIENT
+    deltaJ = 1/m * X' * ( h - y );
 
 end
