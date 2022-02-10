@@ -51,5 +51,21 @@ fprintf('Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n');
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
-%% ============= Part 3: Optimizing using fminunc  =============
+%% ============= Optimizing using fminunc  =============
+% Create options structure for optimization function
+% In this case, this function is fminunc
+options = optimset('GradObj', 'on', % Second arg returned will be the first derivative of gradient decent
+                     'MaxIter', 400);
+
+%  Optimization function fminun tries to determine the local minimum of a given function (in this case, a cost function)
+[theta, cost] = fminunc( @(t)( costFunction(t, X, y) ),
+                        initial_theta, options );
+
+% Print theta to screen
+fprintf('Cost at theta found by fminunc: %f\n', cost);
+fprintf('Expected cost (approx): 0.203\n');
+fprintf('theta: \n');
+fprintf(' %f \n', theta);
+fprintf('Expected theta (approx):\n');
+fprintf(' -25.161\n 0.206\n 0.201\n');
 % TODO
