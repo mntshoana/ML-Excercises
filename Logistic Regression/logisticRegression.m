@@ -1,4 +1,4 @@
-%% Machine Learning - Exercise 2: Logistic Regression
+%% Logistic Regression
 %
 % INITIALIZE
 clear;
@@ -10,7 +10,7 @@ X = data(:, [1, 2]);
 y = data(:, 3);
 
 addpath("octave")
-% ====================   Part 1: Plotting   ====================
+% ====================   Plotting   ====================
 fprintf(['Plotting data with + indicating (y = 1) examples and o ' ...
          'indicating (y = 0) examples.\n']);
 
@@ -25,7 +25,7 @@ fprintf('Paused. Press enter to continue.\n\n');
 pause;
 
 
-% ============== Part 2: Compute Cost and Gradient ==============
+% ============== Compute Cost and Gradient ==============
 [m, n] = size(X);
 X = [ones(m, 1), X];
 
@@ -86,7 +86,7 @@ fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
 
-%% ============== Part 4: Predict and Accuracies ==============
+%% ============== Predict and Accuracies ==============
 %  Predict probability for a student with score 45 on exam 1
 %  and score 85 on exam 2
 prob = sigmoid([1 45 85] * theta);
