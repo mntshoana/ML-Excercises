@@ -32,5 +32,5 @@ initial_theta = zeros(size(X, 2), 1);
 lambda = 1;
 
 % Compute and display initial cost and gradient for regularized logistic regression
-[cost, grad] = costFunctionReg(initial_theta, X, y, lambda);
+[cost, deltaJ] = costFunctionReg(initial_theta, X, y, lambda);
 %TODO
