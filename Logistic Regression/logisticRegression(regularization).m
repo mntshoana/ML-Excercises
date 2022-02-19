@@ -33,4 +33,27 @@ lambda = 1;
 
 % Compute and display initial cost and gradient for regularized logistic regression
 [cost, deltaJ] = costFunctionReg(initial_theta, X, y, lambda);
-%TODO
+fprintf('Cost at initial theta (zeros): %f\n', cost);
+fprintf('Expected cost (approx): 0.693\n');
+fprintf('Gradient at initial theta (zeros) - first five values only:\n');
+fprintf(' %f \n', deltaJ(1:5));
+fprintf('Expected gradients (approx) - first five values only:\n');
+fprintf(' 0.0085\n 0.0188\n 0.0001\n 0.0503\n 0.0115\n');
+
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
+
+% Compute and display cost and gradient
+% with all-ones theta and lambda = 10
+test_theta = ones(size(X,2),1);
+[cost, deltaJ] = costFunctionReg(test_theta, X, y, 10);
+
+fprintf('\nCost at test theta (with lambda = 10): %f\n', cost);
+fprintf('Expected cost (approx): 3.16\n');
+fprintf('Gradient at test theta - first five values only:\n');
+fprintf(' %f \n', grad(1:5));
+fprintf('Expected gradients (approx) - first five values only:\n');
+fprintf(' 0.3460\n 0.1614\n 0.1948\n 0.2269\n 0.0922\n');
+
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
