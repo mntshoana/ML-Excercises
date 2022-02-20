@@ -14,6 +14,6 @@ function [J, regDeltaJ] = costFunctionReg(theta, X, y, lambda)
     
     % Remember, DO NOT regularize initial theta (theta0) 
     regDeltaJ = (lambda / m) * _theta;
-    regDeltaJ = [0; regDelta];
+    regDeltaJ = [0; regDeltaJ];
     regDeltaJ = deltaJ + regDeltaJ;
 end

@@ -39,7 +39,6 @@ fprintf('Gradient at initial theta (zeros) - first five values only:\n');
 fprintf(' %f \n', deltaJ(1:5));
 fprintf('Expected gradients (approx) - first five values only:\n');
 fprintf(' 0.0085\n 0.0188\n 0.0001\n 0.0503\n 0.0115\n');
-
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
 
@@ -51,9 +50,59 @@ test_theta = ones(size(X,2),1);
 fprintf('\nCost at test theta (with lambda = 10): %f\n', cost);
 fprintf('Expected cost (approx): 3.16\n');
 fprintf('Gradient at test theta - first five values only:\n');
-fprintf(' %f \n', grad(1:5));
+fprintf(' %f \n', deltaJ(1:5));
 fprintf('Expected gradients (approx) - first five values only:\n');
 fprintf(' 0.3460\n 0.1614\n 0.1948\n 0.2269\n 0.0922\n');
 
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
+% ========== Effect of regularization ===========
+m = length(y); % number of training examples
+num_iters = 20000;
+alpha = 3;
+
+fprintf('\nShowing gradient decent with lambda = 1\n');
+J_history = zeros(num_iters, 1);
+theta = zeros(size(X,2), 1);
+lambda = 1;
+
+for iter = 1:num_iters
+    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    J_history(iter) = cost;
+    theta = theta - alpha * deltaJ;
+end
+
+%FILE: plotDecisionBoundary.m
+plotDecisionBoundary(theta, X, y);
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
+
+fprintf('\nShowing gradient decent with lambda = 0\n');
+J_history = zeros(num_iters, 1);
+theta = zeros(size(X,2), 1);
+lambda = 0;
+
+for iter = 1:num_iters
+    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    J_history(iter) = cost;
+    theta = theta - alpha * deltaJ;
+end
+
+plotDecisionBoundary(theta, X, y);
+fprintf('\nProgram paused. Press enter to continue.\n');
+pause;
+
+fprintf('\nShowing gradient decent with lambda = 20\n');
+J_history = zeros(num_iters, 1);
+theta = zeros(size(X,2), 1);
+lambda = 20;
+
+for iter = 1:num_iters
+    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    J_history(iter) = cost;
+    theta = theta - alpha * deltaJ;
+end
+
+plotDecisionBoundary(theta, X, y);
 fprintf('\nProgram paused. Press enter to continue.\n');
 pause;
