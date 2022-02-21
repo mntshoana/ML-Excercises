@@ -11,8 +11,8 @@ y = data(:, 3);
 
 addpath("octave")
 % ====================   Plotting   ====================
-fprintf(['Plotting data with + indicating (y = 1) examples and o ' ...
-         'indicating (y = 0) examples.\n']);
+fprintf(['Plotting data with + indicating (y = 1)  and o ' ...
+         'indicating (y = 0) .\n']);
 
 %FILE: plotData.m
 plotData(X, y);
