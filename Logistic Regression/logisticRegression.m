@@ -32,7 +32,7 @@ X = [ones(m, 1), X];
 %FILE: costFunction.m
 % Compute and display initial cost and gradient
 initial_theta = zeros(n + 1, 1);
-[cost, grad] = costFunction(initial_theta, X, y);
+[cost, grad] = costFunction(X, y, initial_theta);
 fprintf('Cost at initial theta (zeros): %f\n', cost);
 fprintf('Expected cost (approx): 0.693\n');
 fprintf('Gradient at initial theta (zeros): \n');
@@ -41,7 +41,7 @@ fprintf('Expected gradients (approx):\n -0.1000\n -12.0092\n -11.2628\n');
 
 % Compute and display cost and gradient with non-zero theta
 test_theta = [-24; 0.2; 0.2];
-[cost, grad] = costFunction(test_theta, X, y);
+[cost, grad] = costFunction(X, y, test_theta);
 fprintf('\nCost at test theta: %f\n', cost);
 fprintf('Expected cost (approx): 0.218\n');
 fprintf('Gradient at test theta: \n');
@@ -58,7 +58,7 @@ options = optimset('GradObj', 'on', % Second arg returned will be the first deri
                      'MaxIter', 400);
 
 %  Optimization function fminun tries to determine the local minimum of a given function (in this case, a cost function)
-[theta, cost] = fminunc( @(t)( costFunction(t, X, y) ),
+[theta, cost] = fminunc( @(t)( costFunction(X, y, t) ),
                         initial_theta, options );
 
 % Print theta to screen

@@ -32,7 +32,7 @@ initial_theta = zeros(size(X, 2), 1);
 lambda = 1;
 
 % Compute and display initial cost and gradient for regularized logistic regression
-[cost, deltaJ] = costFunctionReg(initial_theta, X, y, lambda);
+[cost, deltaJ] = costFunctionReg(X, y, initial_theta, lambda);
 fprintf('Cost at initial theta (zeros): %f\n', cost);
 fprintf('Expected cost (approx): 0.693\n');
 fprintf('Gradient at initial theta (zeros) - first five values only:\n');
@@ -45,7 +45,7 @@ pause;
 % Compute and display cost and gradient
 % with all-ones theta and lambda = 10
 test_theta = ones(size(X,2),1);
-[cost, deltaJ] = costFunctionReg(test_theta, X, y, 10);
+[cost, deltaJ] = costFunctionReg(X, y, test_theta, 10);
 
 fprintf('\nCost at test theta (with lambda = 10): %f\n', cost);
 fprintf('Expected cost (approx): 3.16\n');
@@ -67,7 +67,7 @@ theta = zeros(size(X,2), 1);
 lambda = 1;
 
 for iter = 1:num_iters
-    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    [cost, deltaJ] = costFunctionReg(X, y, theta, lambda);
     J_history(iter) = cost;
     theta = theta - alpha * deltaJ;
 end
@@ -83,7 +83,7 @@ theta = zeros(size(X,2), 1);
 lambda = 0;
 
 for iter = 1:num_iters
-    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    [cost, deltaJ] = costFunctionReg(X, y, theta, lambda);
     J_history(iter) = cost;
     theta = theta - alpha * deltaJ;
 end
@@ -98,7 +98,7 @@ theta = zeros(size(X,2), 1);
 lambda = 20;
 
 for iter = 1:num_iters
-    [cost, deltaJ] = costFunctionReg(theta, X, y, lambda);
+    [cost, deltaJ] = costFunctionReg(X, y, theta, lambda);
     J_history(iter) = cost;
     theta = theta - alpha * deltaJ;
 end

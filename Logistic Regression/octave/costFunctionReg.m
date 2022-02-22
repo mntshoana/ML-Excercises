@@ -1,8 +1,8 @@
-function [J, regDeltaJ] = costFunctionReg(theta, X, y, lambda)
+function [J, regDeltaJ] = costFunctionReg(X, y, theta, lambda)
 % Computes cost and the gradient with regularization (not the gradient decent)
-%   J = COSTFUNCTIONREG(theta, X, y, lambda) computes the cost of using
+%   J = COSTFUNCTIONREG(X, y, theta, lambda) computes the cost of using
 %   theta as the parameter for regularized logistic regression
-    [J, deltaJ] = costFunction(theta, X, y);
+    [J, deltaJ] = costFunction(X, y, theta);
 
     m = length(y);
     alpha = lambda / ( 2 * m );

@@ -1,4 +1,4 @@
-function [J, deltaJ] = costFunction(theta, X, y)
+function [J, deltaJ] = costFunction(X, y, theta)
 %   Logistic regression
 %   Cost and gradient 
     m = length(y);
