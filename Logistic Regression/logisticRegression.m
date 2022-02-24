@@ -58,7 +58,7 @@ options = optimset('GradObj', 'on', % Second arg returned will be the first deri
                      'MaxIter', 400);
 
 %  Optimization function fminun tries to determine the local minimum of a given function (in this case, a cost function)
-[theta, cost] = fminunc( @(t)( costFunction(X, y, t) ),
+[theta, cost] = fminunc( @(theta_)( costFunction(X, y, theta_) ),
                         initial_theta, options );
 
 % Print theta to screen
