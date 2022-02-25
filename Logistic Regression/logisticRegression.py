@@ -56,7 +56,7 @@ input('Paused. Press enter to continue.\n')
 # In this case, this function is fminunc
 options = { 
  "MaxIter": 400, 
- "GradObj": "on" # seek fminunc to also return the first derivative of gradient decent as a second arg returned will be
+ "GradObj": True # seek fminunc to also return the first derivative of gradient decent as a second arg returned will be
 }
 
 #  Optimization function fminun tries to determine the local minimum of a given function (in this case, a cost function)
