@@ -1,9 +1,10 @@
 import numpy as np
+import pandas as pd
 
 def fminunc (func, X = None, options = None):
 # X must be a matrix
    ## Get default options if requested.
-  if (X == options == None and func == 'defaults'):
+  if (X is None and options == None and func == 'defaults'):
     # return default settings for options
     return { 
       "MaxIter": 400,
@@ -31,23 +32,23 @@ def fminunc (func, X = None, options = None):
   x_size = X.shape
   n = X.size
 
-  has_grad = options.get("gradObj") == True
-  cdif = options.get("finDiffType") == "central"
-  max_iter = options.get("maxIter", 400)
-  max_fev = options.get("maxFunEvals", float("inf"))
-  out_func = options.get("outputFunc")
+  has_grad = options.get("GradObj") == True
+  cdif = options.get("GinDiffType", "central") == "central"
+  max_iter = options.get("MaxIter", 400)
+  max_fev = options.get("MaxFunEvals", float("inf"))
+  out_func = options.get("OutputFunc")
 
   ## Get scaling matrix using the TypicalX option. If set to "auto", the
   ## scaling matrix is estimated using the jacobian.
   typical_x = options.get("TypicalX")
   if (typical_x == None):
     typical_x = np.ones((n, 1))
-
+  
   autoscale = options.get("AutoScaling") == True
   dg = 1
   if (not autoscale):
-    dg = 1 ./ typical_x
-
+    dg = 1 / typical_x
+  
   funvalchk = options.get("FunValCheck") == True
   if (funvalchk):
     ## Replace func with a guarded version.
@@ -66,11 +67,14 @@ def fminunc (func, X = None, options = None):
   niter = 1
   nfev = 0
 
-  x = X.copy()
+  x = np.c_[X].copy()
   info = 0
 
   ## Initial evaluation.
-  fval = func (x)
+  if has_grad:
+    fval,_ = func (x)
+  else:
+    fval = func(x)
   n = x.shape[0]
 
   info = 0
@@ -92,9 +96,9 @@ def fminunc (func, X = None, options = None):
   grad = np.array([])
 
   ## Outer loop.t
-  while (niter < maxiter and nfev < maxfev and not info):
+  while (niter < max_iter and nfev < max_fev and not info):
 
-    grad0 = grad
+    grad0 = grad.copy()
 
     ## Calculate function value and gradient (possibly via FD).
     if has_grad:
@@ -111,33 +115,34 @@ def fminunc (func, X = None, options = None):
     else:
       ## Use the damped BFGS formula.
       y = grad - grad0
-      sBs = np.sum(x.dot( np.conj(x)))
+      sBs = np.sum(x * np.conj(x))
+
       # NOTE: w is set later in the inner loop
       Bs = hesr.dot(w)
       sy = y.T.dot(s)
-      theta = 0.8 / np.maximum(1 - sy.divide(sBs), 0.8)
-      r = theta.dot(y) + (1-theta).dot(Bs)
-      tempRoot = np.sqrt(s.T.dot(r)
-      hesr = cholupdate( hesr, r.divide( tempRoot ), "+") )
+      theta = 0.8 / np.maximum(1 - np.divide(sy, sBs), 0.8)
+      r = theta * y + (1-theta) *  Bs
+      tempRoot = np.sqrt(s.T.dot(r))
+      hesr = cholupdate( hesr, np.divide( r, tempRoot ), "+").T
       tempRoot = np.sqrt(sBs)
-      [hesr, info] = cholupdate (hesr, Bs.divide( tempRoot ), "-")
+      hesr, info = cholupdate (hesr, np.divide(Bs, tempRoot ), "-")
+
       if info:
         hesr = np.eye(n)
 
     if autoscale:
       ## Second derivatives approximate the hessian.
-      d2f = np.linalg.norm(hesr, ord=2, axis=0)
-      d2f = norm (hesr, 'columns').T
+      d2f = np.linalg.norm(hesr, ord=2, axis=0).T
       if niter == 1:
         dg = d2f
       else:
         dg = np.maximum(0.1*dg, d2f)
 
     if niter == 1:
-      xn = np.linalg.norm(dg * x, ord=2)
+      xn = np.linalg.norm(dg * x, ord=2)      
       delta = factor * np.maximum(xn, 1)
 
-    if (np.linalg.norm(grad) <= tolf * n*n).any():
+    if (np.linalg.norm(grad, ord=2) <= tolf * n*n).any():
       info = 1
       break
 
@@ -145,28 +150,32 @@ def fminunc (func, X = None, options = None):
     decfac = 0.5
 
     ## Inner loop.
-    while (not suc and niter <= maxiter and nfev < maxfev and not info):
-
+    while (not suc and niter <= max_iter and nfev < max_fev and not info):
       s = - __doglegm__ (hesr, grad, dg, delta)
-
-      sn = np.linalg.norm (dg * s)
+      sn = np.linalg.norm (dg * s, ord=2)
       if niter == 1:
         delta = np.minimum(delta, sn)
 
-      fval1 = func (np.reshape (x + s, x_size)).copy()
+      if has_grad:
+        fval1, _ = func (np.reshape (x + s, x_size))
+        fval1 = fval1.copy()
+      else:
+        fval1 = func (np.reshape (x + s, x_size)).copy()
       nfev += 1
-
       if (fval1 < fval):
         ## Scaled actual reduction.
         actred =  (fval - fval1) / (np.absolute(fval1) + np.absolute(fval))
       else:
         actred = -1
       
-
+      
       w = hesr.dot(s)
       ## Scaled predicted reduction, and ratio.
-      t = 1/2 * np.sum(w.dot( np.conj(w))) + grad.T.dot(s)
-
+      print("s")
+      print(s)
+      
+      t = 1/2 * np.sum(w * np.conj(w)) + grad.T.dot(s)
+      
       if (t < 0):
         prered = -t / ( np.absolute(fval) + np.absolute(fval + t))
         ratio = actred / prered
@@ -189,14 +198,14 @@ def fminunc (func, X = None, options = None):
         decfac = 0.5
         if (abs( 1-ratio ) <= 0.1):
           delta = 1.4142 * sn
-        else if ratio >= 0.5:
-          delta = np.maximum (delta, 1.4142*sn)
+        elif ratio >= 0.5:
+          delta = np.maximum (delta, 1.4142 * sn)
  
 
       if (ratio >= 0.0001):
         ## Successful iteration.
         x += s
-        xn = np.linalg.norm (dg * x)
+        xn = np.linalg.norm (dg * x, ord=2)
         fval = fval1
         nsuciter += 1
         suc = True
@@ -236,7 +245,7 @@ def fminunc (func, X = None, options = None):
         if sn <= tolx * xn:
           info = 2
           ## Again a classic one.
-        else if actred < tolf:
+        elif actred < tolf:
           info = 3
         
       #endif
@@ -250,7 +259,7 @@ def fminunc (func, X = None, options = None):
   output = {
     "iterations": niter,
     "successful": nsuciter,
-    "funcCount": fvnfeval,
+    "funcCount": nfev,
   }
 
 
@@ -263,39 +272,41 @@ def fminunc (func, X = None, options = None):
 ## An assistant function that evaluates a function handle and checks for
 ## bad results.
 def guarded_eval (func, X = None):
- if (X):
+  if (X):
     fx, gx = func(X)
- else:
+  else:
     fx = func(X)
     gx = []
 
   if ( True in pd.DataFrame(fx).isna() ):
-    print("Error: NaN value encountered in fminunc");
-return fx, gx
+    print("Error: NaN value encountered in fminunc")
+  return fx, gx
 
 
 
 
-def __fdjac__ (func, x, fvec, typicalx, cdif, err = 0)
+def __fdjac__ (func, x, fvec, typicalx, cdif, err = 0):
+  eps = np.finfo(float).eps
+  x = np.array(x)
   if cdif:
     err = np.power(max(eps, err), 1/3)
     h = np.dot(typicalx, err)
-    fjac = np.zeros ((fvec.shape[0], x.size))
+    fjac = np.zeros ((len(fvec), x.size))
     for i in range(0, x.size):
-      x1 = x2 = x
+      x1 = x.copy()
+      x2 = x.copy()
       x1[i] += h[i]
       x2[i] -= h[i]
-      fjac[:, i] = (func(x1) - func(x2)) / (x1[i] - x2[i])
+      fjac[:, i] = np.divide(( np.c_[func(x1)] - np.c_[func(x2)]), (x1[i] - x2[i]))
     
   else:
     err = np.sqrt (max (eps, err))
-    h = np.dot(typicalx * err)
-    fjac = np.zeros ((fvec.shape[0], x.size))
+    h = np.dot(typicalx, err)
+    fjac = np.zeros ((len(fvec), x.size))
     for i in range(0, x.size):
-      x1 = x
+      x1 = x.copy()
       x1[i] += h[i]
-      fjac[:, i] = (func(x1) - fvec) / (x1[i] - x[i])
-
+      fjac[:, i] = np.divide(( np.c_[func(x1)] - fvec), (x1[i] - x[i]))
   return fjac
 
 
@@ -305,29 +316,32 @@ def __fdjac__ (func, x, fvec, typicalx, cdif, err = 0)
 ## Minimize 1/2*norm(r*x)^2  subject to the constraint norm(d.*x) <= delta,
 ## x being a convex combination of the gauss-newton and scaled gradient.
 
-def __doglegm__ (r, g, d, delta):
+def __doglegm__ (r, grad, d, delta):
   ## Get Gauss-Newton direction.
-  b = np.divide(r.T, g)
-  x = np.divide(r,   b)
-  xn = np.linalg.norm(d * x)
+  grad = grad.reshape(grad.size, 1)
+  b = np.linalg.lstsq(r.T, grad)[0]
+  x = np.linalg.lstsq(r,   b)[0]
+
+  xn = np.linalg.norm(d * x, ord=2)
+
   if xn > delta:
     ## GN is too big, get scaled gradient.
-    s = g / d
-    sn = np.linalg.norm (s)
+    s = grad / d
+    sn = np.linalg.norm (s, ord=2)
     if sn > 0:
       ## Normalize and rescale.
       s = np.divide(s, sn) / d
       ## Get the line minimizer in s direction.
-      tn = np.linalg.norm ( np.dot(r,s) )
-      snm = np.divide(np.divide(sn / tn),  tn)
+      tn = np.linalg.norm ( np.dot(r,s), ord=2 )
+      snm = np.divide(np.divide(sn, tn),  tn)
       if snm < delta:
         ## Get the dogleg path minimizer.
-        bn = np.linalg.norm (b)
+        bn = np.linalg.norm (b, ord=2)
         dxn = np.divide(delta, xn)
         snmd = np.divide(snm, delta)
         t = np.dot(np.dot(np.divide(bn,sn),  np.divide(bn,xn)),  snmd)
-        t -= dxn * np.power(snmd,2) - np.sqrt( np.power(t-dxn, 2) + np.dot(np.power(1-dxn, 2), np.power(1-snmd, 2) ))
-        alpha = np.divide( np.dot(dxn , np.power(1-snmd, 2)), t)
+        t -= dxn * np.power(snmd,2) - np.sqrt( np.power(t-dxn, 2) + np.dot( np.power(1-dxn, 2), np.power(1-snmd, 2) ))
+        alpha = np.divide( np.dot(dxn , 1- np.power(snmd, 2)), t)
       else:
         alpha = 0
     else:
@@ -336,26 +350,39 @@ def __doglegm__ (r, g, d, delta):
 
     ## Form the appropriate convex combination.
     tempProduct = np.dot(1-alpha, np.minimum(snm, delta) )
-    x = np.dot( np.dot( np.dot( alpha, x), tempProduct), s)
-    
-return x
+    x = np.dot( alpha, x) + np.dot( tempProduct, s)  
+    #end very first if
+  return x
 
 
-##
 def cholupdate(R, x, sign):
-  p = np.size(x)
-  x = x.T
-  for k in range(p):
+  if not np.all(np.linalg.eigvals(R) > 0): #check that all eigenvalues are positive:
+    return R, 1
+  if (round(np.linalg.det(R)) == 0): # singular matrix
+    return R, 2
+
+
+  L = R.copy()
+  x = x.copy()
+  n = x.size
+  for k in range(0, n):
     if sign == '+':
-      r = np.sqrt(R[k,k]**2 + x[k]**2)
+      r = np.sqrt(np.power(L[k, k], 2) + np.power(x[k],2))
     elif sign == '-':
-      r = np.sqrt(R[k,k]**2 - x[k]**2)
-    c = r/R[k,k]
-    s = x[k]/R[k,k]
-    R[k,k] = r
-    if sign == '+':
-      R[k,k+1:p] = (R[k,k+1:p] + s*x[k+1:p])/c
-    elif sign == '-':
-      R[k,k+1:p] = (R[k,k+1:p] - s*x[k+1:p])/c
-    x[k+1:p]= c*x[k+1:p] - s*R[k, k+1:p]
-  return R
+      r = np.sqrt(np.power(L[k, k], 2) - np.power(x[k],2))
+    c = np.divide(r, L[k, k])
+    s = np.divide(x[k], L[k, k])
+    L[k, k] = r
+    if k < n:
+      if sign == '+':
+        result = np.c_[L[k+1:n, k]] + np.divide(s * x[k+1:n], c) 
+      elif sign == '-':
+        result = np.c_[L[k+1:n, k]] - np.divide(s * x[k+1:n], c)
+
+      for l in range(0, result.size):
+        L[k+1+l, k] = result[l]
+      for l in range (k+1, n):
+        x[l]= c * x[l] - s * L[l, k]
+  if (sign == '-'):
+    return L, 0
+  return L
