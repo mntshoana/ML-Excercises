@@ -66,9 +66,9 @@ theta, cost = fminunc( lambda theta_: costFunction(X, y, theta_),
                         options )
 
 # Print theta to screen
-print('Cost at theta found by fminunc: \n', cost);
-print('Expected cost (approx): 0.203');
-print('theta: \n', theta);
-print('Expected theta (approx):');
-print(' -25.161\n 0.206\n 0.201\n');
+print('Cost at theta found by fminunc: \n', cost)
+print('Expected cost (approx): 0.203')
+print('theta: \n', theta)
+print('Expected theta (approx):')
+print(' -25.161\n 0.206\n 0.201\n')
 # TODO
