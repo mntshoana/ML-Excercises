@@ -9,7 +9,7 @@ addpath ("octave")
 % X1 represents the size of a housen in sq-ft
 % X2 represents the number of bedrooms
 % y represents price of the house
-data = load('data/ex1data2.txt');
+data = load('data/data.txt');
 X = data(:, 1:2);
 y = data(:, 3);
 m = length(y);

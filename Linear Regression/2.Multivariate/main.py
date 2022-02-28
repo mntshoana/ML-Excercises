@@ -11,7 +11,7 @@ plt.close("all")
 # X1 represents the size of a housen in sq-ft
 # X2 represents the number of bedrooms
 # y represents price of the house
-data = pd.read_csv('data/ex1data2.txt', names=['Size', 'Bedrooms', 'Price'])
+data = pd.read_csv('data/data.txt', names=['Size', 'Bedrooms', 'Price'])
 X = data.iloc[:, 0:2]
 y = data.iloc[:, 2]
 m = y.size

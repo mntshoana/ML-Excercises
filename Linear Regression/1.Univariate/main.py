@@ -11,7 +11,7 @@ plt.close("all")
 # X represents population size in units of 10,000s
 # y represents profit in units of $10,000s
 print('Plotting data')
-data = pd.read_csv('data/ex1data1.txt', names=['Population', 'Profit'])
+data = pd.read_csv('data/data.txt', names=['Population', 'Profit'])
 X = data.iloc[:,0]
 y = data.iloc[:,1]
 #FILE: plotData.py

@@ -9,7 +9,7 @@ addpath ("octave")
 % X represents population size in units of 10,000s
 % y represents profit in units of $10,000s
 fprintf('Plotting\n')
-data = load('data/ex1data1.txt');
+data = load('data/data.txt');
 X = data(:, 1); y = data(:, 2);
 % FILE: plotData.m
 plotData(X, y);
