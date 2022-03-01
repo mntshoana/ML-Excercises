@@ -5,10 +5,11 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+
 os.system('cls' if os.name == 'nt' else 'clear')
 plt.close("all")
 
-data = pd.read_csv('data/ex2data1.txt', names=['Exam 1 Score', 'Exam 2 Score', 'Admitted'])
+data = pd.read_csv('data/data.txt', names=['Exam 1 Score', 'Exam 2 Score', 'Admitted'])
 X = data.iloc[:, 0:2]
 y = data.iloc[:, 2]
 
@@ -52,18 +53,12 @@ print('Expected gradients (approx):\n 0.043\n 2.566\n 2.647\n')
 input('Paused. Press enter to continue.\n')
 
 # ============= Optimizing using fminunc  =============
-# Create options structure for optimization function
-# In this case, this function is fminunc
-options = { 
- "MaxIter": 400, 
- "GradObj": True # seek fminunc to also return the first derivative of gradient decent as a second arg returned will be
-}
-
-#  Optimization function fminun tries to determine the local minimum of a given function (in this case, a cost function)
-from python.fminunc import fminunc
-theta, cost = fminunc( lambda theta_: costFunction(X, y, theta_),
-                        initial_theta, 
-                        options )
+# Optimization function fminunc will be borrowed from a different language (created using octave)
+# Fminunc tries to determine the local minimum of a given function (in this case, a cost function)
+# myfminunc file was adjusted only a little to allow python to use it 
+from oct2py import octave
+octave.addpath("./python")
+theta, cost, *_ = octave.myfminunc( X, y, initial_theta, nout=2)
 
 # Print theta to screen
 print('Cost at theta found by fminunc: \n', cost)

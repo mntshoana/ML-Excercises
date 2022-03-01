@@ -5,7 +5,7 @@ clear;
 close all;
 clc;
 
-data = load('data/ex2data1.txt');
+data = load('data/data.txt');
 X = data(:, [1, 2]);
 y = data(:, 3);
 
